@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mieter-Selbstauskunft · Neuburger Str. 98 · Passau</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:#F4F1EC;color:#1a1a1a;font-size:15px;line-height:1.6}
+.header{background:#1C2B3A;color:white;padding:32px 24px 28px}
+.header-tag{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#C8A96E;margin-bottom:8px}
+.header h1{font-size:26px;font-weight:700;margin-bottom:8px;letter-spacing:-.5px}
+.header-sub{font-size:13px;color:rgba(255,255,255,.6);line-height:1.5}
+.progress-bar{background:#162333;padding:12px 24px 16px;display:flex;gap:6px;align-items:center}
+.dot{height:4px;flex:1;border-radius:2px;background:rgba(255,255,255,.15);transition:background .3s}
+.dot.on{background:#C8A96E}
+.progress-label{font-size:11px;color:rgba(255,255,255,.4);padding:4px 24px 0;background:#162333}
+main{max-width:680px;margin:0 auto;padding:24px 16px 60px}
+.section{background:#fff;border-radius:14px;border:1px solid #E0DBD4;margin-bottom:20px;overflow:hidden;display:none}
+.section.active{display:block}
+.sec-head{background:#2C3E50;padding:14px 20px;display:flex;align-items:center;gap:12px}
+.sec-icon{font-size:18px}
+.sec-title{font-size:16px;font-weight:600;color:white}
+.sec-body{padding:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid.one{grid-template-columns:1fr}
+@media(max-width:480px){.grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#666}
+.field label .req{color:#C8A96E;margin-left:2px}
+.field input,.field select,.field textarea{width:100%;padding:10px 13px;border:1.5px solid #D5CFC8;border-radius:9px;font-family:inherit;font-size:14px;color:#1a1a1a;background:#FDFCFA;outline:none;-webkit-appearance:none;appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#C8A96E;box-shadow:0 0 0 3px rgba(200,169,110,.15)}
+.field input.err,.field select.err,.field textarea.err{border-color:#C0392B}
+.field textarea{resize:vertical;min-height:80px}
+.field .hint{font-size:11.5px;color:#888;font-style:italic;line-height:1.4}
+.field .emsg{font-size:11.5px;color:#C0392B;display:none}
+.field.bad .emsg{display:block}
+.radio-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.ropt{display:flex;align-items:center;gap:6px;cursor:pointer;background:#F4F1EC;border:1.5px solid #D5CFC8;border-radius:8px;padding:8px 12px;font-size:13px;transition:all .2s;user-select:none}
+.ropt.on{background:#FBF5E8;border-color:#C8A96E;font-weight:500}
+.rdot{width:13px;height:13px;border-radius:50%;border:2px solid #ccc;transition:all .2s;flex-shrink:0}
+.ropt.on .rdot{border-color:#C8A96E;background:#C8A96E}
+.checklist{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.citem{display:flex;align-items:flex-start;gap:10px;cursor:pointer;padding:10px 13px;border-radius:10px;border:1.5px solid #D5CFC8;background:#F9F7F4;transition:all .2s}
+.citem.on{background:#FBF5E8;border-color:#C8A96E}
+.cbox{width:18px;height:18px;border-radius:5px;border:2px solid #ccc;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;transition:all .2s}
+.citem.on .cbox{background:#C8A96E;border-color:#C8A96E}
+.ctext{font-size:13.5px;line-height:1.4}
+.csub{font-size:11.5px;color:#888;margin-top:2px}
+.divider{height:1px;background:#E8E4DE;margin:18px 0}
+.infobox{background:#FBF5E8;border-left:3px solid #C8A96E;border-radius:8px;padding:11px 14px;font-size:13px;color:#3a2e1a;line-height:1.5;margin-top:14px}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:10px}
+.btn{padding:12px 24px;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:#1C2B3A;color:white;flex:1;max-width:200px}
+.btn-primary:hover{background:#2C3E50}
+.btn-back{background:transparent;color:#888;border:1.5px solid #D5CFC8;flex:0}
+.btn-back:hover{border-color:#1C2B3A;color:#1C2B3A}
+.btn-submit{background:#2D6A4F;color:white;flex:1;max-width:240px}
+.btn-submit:hover{background:#245a41}
+.success{display:none;text-align:center;padding:44px 20px;background:white;border-radius:14px;border:1px solid #E0DBD4}
+.success-icon{width:60px;height:60px;background:#FBF5E8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px}
+.success h2{font-size:22px;margin-bottom:8px}
+.success p{color:#666;font-size:14px;line-height:1.6;max-width:380px;margin:0 auto 22px}
+.print-btn{background:#C8A96E;color:#2a1a00;padding:12px 22px;border-radius:9px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;border:none;margin:4px}
+.reset-btn{background:transparent;color:#888;border:1.5px solid #D5CFC8;padding:12px 22px;border-radius:9px;font-family:inherit;font-size:14px;cursor:pointer;margin:4px}
+@media print{
+  .header{background:#1C2B3A!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sec-head{background:#2C3E50!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .section{display:block!important}
+  .nav,.progress-bar,.progress-label,.success{display:none!important}
+  body{background:white}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-tag">Vermietung · Wohnung Nr. 20</div>
+  <h1>Mieter-Selbstauskunft</h1>
+  <div class="header-sub">Wohnanlage am Fernsehturm · Neuburger Straße 98 · 94036 Passau-Haidenhof<br>Bitte alle Felder vollständig ausfüllen. Angaben werden vertraulich behandelt.</div>
+</div>
+<div class="progress-bar" id="prog"></div>
+<div class="progress-label" id="plabel">Schritt 1 von 5 · Persönliche Angaben</div>
+
+<main>
+
+<div class="section active" id="s0">
+  <div class="sec-head"><span class="sec-icon">👤</span><span class="sec-title">1. Persönliche Angaben</span></div>
+  <div class="sec-body">
+    <div class="grid">
+      <div class="field"><label>Vorname <span class="req">*</span></label><input id="vorname" type="text" placeholder="Max"><span class="emsg">Pflichtfeld</span></div>
+      <div class="field"><label>Nachname <span class="req">*</span></label><input id="nachname" type="text" placeholder="Mustermann"><span class="emsg">Pflichtfeld</span></div>
+      <div class="field"><label>Geburtsdatum <span class="req">*</span></label><input id="geburt" type="date"><span class="emsg">Pflichtfeld</span></div>
+      <div class="field"><label>Staatsangehörigkeit</label><input id="staat" type="text" placeholder="Deutsch"></div>
+      <div class="field"><label>Telefon <span class="req">*</span></label><input id="tel" type="tel" placeholder="+49 851 ..."><span class="emsg">Pflichtfeld</span></div>
+      <div class="field"><label>E-Mail <span class="req">*</span></label><input id="email" type="email" placeholder="max@muster.de"><span class="emsg">Pflichtfeld</span></div>
+      <div class="field one" style="grid-column:1/-1"><label>Aktuelle Adresse <span class="req">*</span></label><input id="adresse" type="text" placeholder="Musterstr. 1, 12345 Musterstadt"><span class="emsg">Pflichtfeld</span></div>
+      <div class="field"><label>Einziehende Personen <span class="req">*</span></label>
+        <select id="personen"><option value="">Bitte wählen</option><option>1 Person</option><option>2 Personen</option><option>3 Personen</option><option>4+ Personen</option></select>
+        <span class="emsg">Pflichtfeld</span>
+      </div>
+      <div class="field"><label>Haustiere</label>
+        <div class="radio-group">
+          <label class="ropt" onclick="selR(this,'haustiere','Nein')"><div class="rdot"></div>Keine</label>
+          <label class="ropt" onclick="selR(this,'haustiere','Ja')"><div class="rdot"></div>Ja</label>
+        </div>
+      </div>
+      <div class="field" id="ht-detail" style="display:none;grid-column:1/-1"><label>Art &amp; Anzahl Haustiere</label><input id="ht-text" type="text" placeholder="z. B. 1 Katze"></div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="s1">
+  <div class="sec-head"><span class="sec-icon">💼</span><span class="sec-title">2. Berufliche Situation</span></div>
+  <div class="sec-body">
+    <div class="grid">
+      <div class="field"><label>Beruf / Tätigkeit <span class="req">*</span></label><input id="beruf" type="text" placeholder="z. B. Ingenieur"><span class="emsg">Pflichtfeld</span></div>
+      <div class="field"><label>Arbeitgeber</label><input id="arbeitgeber" type="text" placeholder="Musterfirma GmbH"></div>
+      <div class="field"><label>Beschäftigt seit</label><input id="seit" type="month"></div>
+      <div class="field"><label>Arbeitsverhältnis <span class="req">*</span></label>
+        <select id="av"><option value="">Bitte wählen</option><option>Unbefristet angestellt</option><option>Befristet angestellt</option><option>Beamter / Beamtin</option><option>Selbstständig / Freiberufler</option><option>Rentner / Pensionär</option><option>Student / Studentin</option><option>Sonstiges</option></select>
+        <span class="emsg">Pflichtfeld</span>
+      </div>
+      <div class="field" style="grid-column:1/-1"><label>Monatl. Nettoeinkommen (ca.) <span class="req">*</span></label><input id="einkommen" type="text" placeholder="z. B. 2.500 €"><div class="hint">Empfehlung: Kaltmiete max. 1/3 des Nettos → mind. ca. 2.000 € netto</div><span class="emsg">Pflichtfeld</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="s2">
+  <div class="sec-head"><span class="sec-icon">🏠</span><span class="sec-title">3. Aktuelle Wohnsituation</span></div>
+  <div class="sec-body">
+    <div class="grid">
+      <div class="field"><label>Aktueller Vermieter</label><input id="vname" type="text" placeholder="Max Mustermann"></div>
+      <div class="field"><label>Telefon Vermieter</label><input id="vtel" type="tel" placeholder="+49 ..."></div>
+      <div class="field"><label>Bisherige Mietdauer</label><input id="mdauer" type="text" placeholder="z. B. 3 Jahre"></div>
+      <div class="field"><label>Gewünschter Einzug <span class="req">*</span></label><input id="einzug" type="date"><span class="emsg">Pflichtfeld</span></div>
+      <div class="field" style="grid-column:1/-1"><label>Grund für Wohnungswechsel</label><textarea id="grund" placeholder="z. B. beruflicher Umzug, Vergrößerung ..."></textarea></div>
+      <div class="field" style="grid-column:1/-1"><label>Mietschuldenfreiheitsbescheinigung <span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="ropt" onclick="selR(this,'msch','Ja, liegt vor')"><div class="rdot"></div>Ja, liegt vor</label>
+          <label class="ropt" onclick="selR(this,'msch','Wird beantragt')"><div class="rdot"></div>Wird beantragt</label>
+          <label class="ropt" onclick="selR(this,'msch','Erstmieter')"><div class="rdot"></div>Erstmieter</label>
+        </div>
+        <div class="hint" style="margin-top:5px">Wird beim Besichtigungstermin im Original erbeten</div>
+        <span class="emsg" id="msch-err">Bitte eine Option wählen</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="s3">
+  <div class="sec-head"><span class="sec-icon">🛡️</span><span class="sec-title">4. Bonität &amp; Finanzen</span></div>
+  <div class="sec-body">
+    <div class="grid one">
+      <div class="field"><label>SCHUFA-Auskunft vorhanden? <span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="ropt" onclick="selR(this,'schufa','Ja, max. 3 Monate alt')"><div class="rdot"></div>Ja, max. 3 Mon. alt</label>
+          <label class="ropt" onclick="selR(this,'schufa','Wird beantragt')"><div class="rdot"></div>Wird beantragt</label>
+          <label class="ropt" onclick="selR(this,'schufa','Nein')"><div class="rdot"></div>Nein</label>
+        </div>
+        <div class="hint" style="margin-top:5px">Erhältlich unter meineschufa.de – bitte zum Besichtigungstermin mitbringen</div>
+        <span class="emsg" id="schufa-err">Bitte eine Option wählen</span>
+      </div>
+      <div class="field"><label>Insolvenzen / Pfändungen?</label>
+        <div class="radio-group">
+          <label class="ropt" onclick="selR(this,'ins','Nein')"><div class="rdot"></div>Nein</label>
+          <label class="ropt" onclick="selR(this,'ins','Früher, abgeschlossen')"><div class="rdot"></div>Früher (abgeschlossen)</label>
+          <label class="ropt" onclick="selR(this,'ins','Ja, aktuell')"><div class="rdot"></div>Ja, aktuell</label>
+        </div>
+      </div>
+    </div>
+    <div class="infobox"><strong>Kaution:</strong> 3 Monatskaltmieten = 2.010 €. Zahlung in bis zu 3 Raten möglich, erste Rate bei Einzug fällig.</div>
+  </div>
+</div>
+
+<div class="section" id="s4">
+  <div class="sec-head"><span class="sec-icon">✍️</span><span class="sec-title">5. Ergänzende Angaben &amp; Einwilligung</span></div>
+  <div class="sec-body">
+    <div class="grid one">
+      <div class="field"><label>Warum interessieren Sie sich für diese Wohnung?</label><textarea id="interesse" placeholder="Beschreiben Sie kurz ..." style="min-height:90px"></textarea></div>
+      <div class="field"><label>Fragen an den Vermieter?</label><textarea id="fragen" placeholder="Ihre Fragen ..."></textarea></div>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:10px">Datenschutz &amp; Einwilligung</p>
+    <p style="font-size:13px;color:#333;line-height:1.6;margin-bottom:14px">Die oben gemachten Angaben sind vollständig und wahrheitsgemäß. Ich erkläre mich damit einverstanden, dass meine personenbezogenen Daten ausschließlich zur Prüfung meiner Eignung als Mieter für das genannte Objekt verarbeitet und nicht an Dritte weitergegeben werden. Die Daten werden nach Abschluss des Auswahlverfahrens gelöscht (Art. 13 DSGVO).</p>
+    <label class="citem" id="ci-einw" onclick="togC(this,'einw')">
+      <div class="cbox" id="cb-einw"></div>
+      <div class="ctext">Ich stimme der Verarbeitung meiner Daten gemäß obiger Datenschutzerklärung zu. <span style="color:#C8A96E">*</span></div>
+    </label>
+    <span class="emsg" id="einw-err" style="display:none;font-size:11.5px;color:#C0392B;margin-top:4px">Bitte Einwilligung bestätigen</span>
+    <div class="divider"></div>
+    <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:10px">Bitte zum Besichtigungstermin mitbringen</p>
+    <div class="checklist">
+      <label class="citem" onclick="togC(this,'c1')"><div class="cbox" id="cb-c1"></div><div><div class="ctext">Ausgefüllte Selbstauskunft (ausgedruckt &amp; unterschrieben)</div></div></label>
+      <label class="citem" onclick="togC(this,'c2')"><div class="cbox" id="cb-c2"></div><div><div class="ctext">SCHUFA-Bonitätsauskunft</div><div class="csub">Max. 3 Monate alt · meineschufa.de</div></div></label>
+      <label class="citem" onclick="togC(this,'c3')"><div class="cbox" id="cb-c3"></div><div><div class="ctext">Letzte 3 Gehaltsabrechnungen / Einkommensnachweise</div></div></label>
+      <label class="citem" onclick="togC(this,'c4')"><div class="cbox" id="cb-c4"></div><div><div class="ctext">Mietschuldenfreiheitsbescheinigung</div><div class="csub">Vom aktuellen Vermieter ausgestellt</div></div></label>
+      <label class="citem" onclick="togC(this,'c5')"><div class="cbox" id="cb-c5"></div><div><div class="ctext">Kopie Personalausweis / Reisepass</div></div></label>
+    </div>
+  </div>
+</div>
+
+<div class="success" id="success">
+  <div class="success-icon">✓</div>
+  <h2>Vielen Dank!</h2>
+  <p>Ihre Selbstauskunft wurde vollständig ausgefüllt. Bitte drucken Sie das Formular aus, unterschreiben Sie es und bringen Sie es zum Besichtigungstermin mit.</p>
+  <div>
+    <button class="print-btn" onclick="window.print()">🖨️ Drucken / Als PDF speichern</button>
+    <button class="reset-btn" onclick="resetF()">Neu ausfüllen</button>
+  </div>
+</div>
+
+<div class="nav" id="nav">
+  <button class="btn btn-back" id="bbk" onclick="go(-1)" style="display:none">← Zurück</button>
+  <button class="btn btn-primary" id="bnt" onclick="go(1)">Weiter →</button>
+  <button class="btn btn-submit" id="bsb" onclick="submit()" style="display:none">Absenden &amp; Drucken ✓</button>
+</div>
+
+</main>
+
+<script>
+var step=0,total=5,rv={};
+var labels=['Persönliche Angaben','Berufliche Situation','Aktuelle Wohnsituation','Bonität & Finanzen','Angaben & Einwilligung'];
+
+function updProg(){
+  var p=document.getElementById('prog');
+  p.innerHTML='';
+  for(var i=0;i<total;i++){var d=document.createElement('div');d.className='dot'+(i<=step?' on':'');p.appendChild(d);}
+  document.getElementById('plabel').textContent='Schritt '+(step+1)+' von '+total+' · '+labels[step];
+}
+
+function showSec(n){
+  for(var i=0;i<total;i++){
+    var s=document.getElementById('s'+i);
+    if(s)s.className='section'+(i===n?' active':'');
+  }
+  document.getElementById('bbk').style.display=n>0?'inline-block':'none';
+  document.getElementById('bnt').style.display=n<total-1?'inline-block':'none';
+  document.getElementById('bsb').style.display=n===total-1?'inline-block':'none';
+  updProg();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function selR(el,name,val){
+  document.querySelectorAll('[onclick*="\''+name+'\'"]').forEach(function(o){o.classList.remove('on');});
+  el.classList.add('on');
+  rv[name]=val;
+  if(name==='haustiere'){document.getElementById('ht-detail').style.display=val==='Ja'?'block':'none';}
+}
+
+function togC(el,id){
+  el.classList.toggle('on');
+  var cb=document.getElementById('cb-'+id);
+  cb.textContent=el.classList.contains('on')?'✓':'';
+}
+
+function req(id){
+  var el=document.getElementById(id);
+  var f=el.closest('.field');
+  if(!el.value.trim()){el.classList.add('err');f.classList.add('bad');return false;}
+  el.classList.remove('err');f.classList.remove('bad');return true;
+}
+
+function validate(n){
+  var ok=true;
+  if(n===0){['vorname','nachname','geburt','tel','email','adresse','personen'].forEach(function(id){if(!req(id))ok=false;});}
+  if(n===1){['beruf','einkommen','av'].forEach(function(id){if(!req(id))ok=false;});}
+  if(n===2){
+    if(!req('einzug'))ok=false;
+    if(!rv['msch']){document.getElementById('msch-err').style.display='block';ok=false;}
+    else document.getElementById('msch-err').style.display='none';
+  }
+  if(n===3){
+    if(!rv['schufa']){document.getElementById('schufa-err').style.display='block';ok=false;}
+    else document.getElementById('schufa-err').style.display='none';
+  }
+  if(n===4){
+    var einw=document.getElementById('ci-einw');
+    if(!einw.classList.contains('on')){document.getElementById('einw-err').style.display='block';ok=false;}
+    else document.getElementById('einw-err').style.display='none';
+  }
+  return ok;
+}
+
+function go(dir){
+  if(dir===1&&!validate(step))return;
+  step+=dir;
+  if(step<0)step=0;
+  if(step>=total)step=total-1;
+  showSec(step);
+}
+
+function submit(){
+  if(!validate(step))return;
+  for(var i=0;i<total;i++){var s=document.getElementById('s'+i);if(s)s.style.display='none';}
+  document.getElementById('nav').style.display='none';
+  document.getElementById('success').style.display='block';
+  document.getElementById('prog').parentElement && (document.getElementById('prog').style.display='none');
+  document.getElementById('plabel').style.display='none';
+}
+
+function resetF(){
+  document.querySelectorAll('input,textarea').forEach(function(e){e.value='';e.classList.remove('err');});
+  document.querySelectorAll('select').forEach(function(e){e.value='';e.classList.remove('err');});
+  document.querySelectorAll('.ropt').forEach(function(e){e.classList.remove('on');});
+  document.querySelectorAll('.citem').forEach(function(e){e.classList.remove('on');});
+  document.querySelectorAll('.cbox').forEach(function(e){e.textContent='';});
+  rv={};
+  document.getElementById('ht-detail').style.display='none';
+  for(var i=0;i<total;i++){var s=document.getElementById('s'+i);if(s)s.style.display='';}
+  document.getElementById('success').style.display='none';
+  document.getElementById('nav').style.display='flex';
+  document.getElementById('prog').style.display='flex';
+  document.getElementById('plabel').style.display='block';
+  step=0;
+  showSec(0);
+}
+
+showSec(0);
+</script>
+</body>
+</html>
